@@ -1,6 +1,7 @@
 package menu;
 
 import java.util.Scanner;
+
 import clases.Alumno;
 import clases.Profesor;
 import clases.Idioma;
@@ -54,6 +55,7 @@ public class Menu {
 			System.out.println("4. Eliminar");
 			System.out.println("5. Activar");
 			System.out.println("6. Desactivar");
+			System.out.println("7. Idioma con mas horas");
 			System.out.println("0. Volver");
 			System.out.println("____________________________________");
 			opcion = input.nextInt();
@@ -111,6 +113,9 @@ public class Menu {
 					// Recibo por teclado el nombre del idioma a desactivar
 					academia.desactivarIdioma(nombre);
 					// desactivarIdioma recibe el nombre como parametro y lo desactiva
+					break;
+				} case 7 :{ // Idioma con mas horas
+					System.out.println(academia.idiomaConMasHoras());
 					break;
 				}
 				case 0: break;

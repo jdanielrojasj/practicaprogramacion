@@ -101,6 +101,20 @@ public class GestorAcademia {
 				}
 			}
 	
+	// Metodo que permite mostrar el idioma con mas horas
+			public Idioma idiomaConMasHoras() {
+				// creo una variable que servira para comparar 
+			    Idioma masHoras = listaIdiomas.get(0);
+			    // Recorro el ArrrayList con un for y comparo uno por uno
+			    for (int i = 1; i < listaIdiomas.size(); i++) {
+			        if (listaIdiomas.get(i).getHoras() >= masHoras.getHoras()) {
+			        	// Guardo el mayor
+			        	masHoras = listaIdiomas.get(i);
+			        }
+			    }
+			    	// Devuelvo el idioma con mas horas con todos sus datos
+			    return masHoras;
+			}
 	
 	// __________________________________________
 	//
