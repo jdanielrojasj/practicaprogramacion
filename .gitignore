@@ -1,0 +1,25 @@
+# Compilados
+bin/
+*.class
+
+# Eclipse
+.metadata/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
+
+# Java
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# IDE / Sistema
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
