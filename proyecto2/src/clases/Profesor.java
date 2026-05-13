@@ -50,8 +50,16 @@ public class Profesor extends Persona {
 		}
 		@Override
 		public String toString() {
-			return "Profesor [salarioBase=" + salarioBase + ", antiguedad=" + antiguedad + ", idioma=" + idioma
-					+ ", calcularSalario()=" + calcularSalario() + ", toString()=" + super.toString() + "]";
+			return "Profesor " + super.toString()  
+					+ " salarioBase=" + salarioBase 
+					+ ", antiguedad=" + antiguedad 
+					+ ", idioma=" + idioma
+					+ ", calcularSalario()=" + calcularSalario() 
+					;
+		}
+		@Override
+		public void presentarse() {
+			
 		}
 		
 		

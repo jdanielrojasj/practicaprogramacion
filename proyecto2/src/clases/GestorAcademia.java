@@ -75,7 +75,7 @@ public class GestorAcademia {
 					}
 				}
 				if (!encontrado) {
-					System.out.println("No existe ningun idioma con nombre '" + nombre + "'.");
+					System.out.println("No existe ningun idioma con nombre '" + nombre);
 				}
 			}
 
@@ -83,10 +83,10 @@ public class GestorAcademia {
 			public void activarIdioma (String nombre) {
 				Idioma idioma = buscarIdioma(nombre);
 				if (idioma == null) {
-					System.out.println("No existe ningun idioma con nombre '" + nombre + "'.");
+					System.out.println("No existe ningun idioma con nombre '" + nombre);
 				} else {
 					idioma.activarIdioma();
-					System.out.println("Idioma " + nombre + " activado.");
+					System.out.println("Idioma " + nombre + " activado");
 				}
 			}
 
@@ -94,10 +94,10 @@ public class GestorAcademia {
 			public void desactivarIdioma (String nombre) {
 				Idioma idioma = buscarIdioma(nombre);
 				if (idioma == null) {
-					System.out.println("No existe ningun idioma con nombre '" + nombre + "'.");
+					System.out.println("No existe ningun idioma con nombre '" + nombre);
 				} else {
 					idioma.desactivarIdioma();
-					System.out.println("Idioma " + nombre + " desactivado.");
+					System.out.println("Idioma " + nombre + " desactivado");
 				}
 			}
 	
@@ -128,6 +128,7 @@ public class GestorAcademia {
 			listaAlumnos.add(nuevoAlumno);
 		
 	}
+	
 	
 	// listarAlumnos
 		public void listarAlumnos() {
@@ -163,7 +164,7 @@ public class GestorAcademia {
 				}
 			}
 			if (!encontrado) {
-				System.out.println("No existe ningun alumno con id " + id + ".");
+				System.out.println("No existe ningun alumno con id " + id);
 			}
 		}
 
@@ -174,19 +175,40 @@ public class GestorAcademia {
 				System.out.println("No existe ningun alumno con id " + id + ".");
 			} else {
 				alumno.setSede(nuevaSede);
-				System.out.println("Sede del alumno " + id + " modificada a " + nuevaSede + ".");
+				System.out.println("Sede del alumno " + id + " modificada a " + nuevaSede);
 			}
 		}
 
-	// graduarAlumno: busca el alumno por id y delega en el metodo propio de Alumno
+	// graduarAlumno: busca el alumno por id y GRADUA al Alumno
 		public void graduarAlumno (int id) {
 			Alumno alumno = buscarAlumno(id);
 			if (alumno == null) {
-				System.out.println("No existe ningun alumno con id " + id + ".");
+				System.out.println("No existe ningun alumno con id " + id);
 			} else {
 				alumno.graduarAlumno();
 			}
 		}
+	// expulsarAlumno: busca el alumno por id y EXPULSA al Alumno
+		public void expulsarAlumno (int id) {
+			Alumno alumno = buscarAlumno(id);
+			if (alumno == null) {
+				System.out.println("No existe ningun alumno con id " + id);
+			} else {
+				alumno.expulsarAlumno();
+				
+				System.out.println(alumno.getNombre() + " ya no pertenece a la Academia");
+			}
+		}
+		
+		// Metodo de Alumno Presentarse
+				public void presentarAlumno (int id) {
+					Alumno alumno = buscarAlumno(id);
+					if (alumno == null) {
+						System.out.println("No existe ningun alumno con id " + id);
+					} else {
+						alumno.presentarse();
+					}
+				}
 
 	// __________________________________________
 	//
@@ -233,7 +255,7 @@ public class GestorAcademia {
 				}
 			}
 			if (!encontrado) {
-				System.out.println("No existe ningun profesor con id " + id + ".");
+				System.out.println("No existe ningun profesor con id " + id);
 			}
 		}
 
@@ -241,10 +263,10 @@ public class GestorAcademia {
 		public void modificarSueldoProfesor (int id, double nuevoSueldo) {
 			Profesor profesor = buscarProfesor(id);
 			if (profesor == null) {
-				System.out.println("No existe ningun profesor con id " + id + ".");
+				System.out.println("No existe ningun profesor con id " + id);
 			} else {
 				profesor.setSalarioBase(nuevoSueldo);
-				System.out.println("Sueldo del profesor " + id + " modificado a " + nuevoSueldo + ".");
+				System.out.println("Sueldo del profesor " + id + " modificado a " + nuevoSueldo);
 			}
 		}
 

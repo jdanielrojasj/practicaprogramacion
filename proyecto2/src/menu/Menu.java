@@ -138,6 +138,8 @@ public class Menu {
 			System.out.println("4. Eliminar");
 			System.out.println("5. Modificar sede");
 			System.out.println("6. Graduar");
+			System.out.println("7. Expulsar");
+			System.out.println("8. Presentar alumno por ID");
 			System.out.println("0. Volver");
 			System.out.println("____________________________________");
 			opcion = input.nextInt();
@@ -210,7 +212,23 @@ public class Menu {
 					academia.graduarAlumno(id);
 					break;
 				}
-				case 0: break;
+				case 7: { // expulsar alumno
+					System.out.print("Id del alumno a expulsar: ");
+					int id = input.nextInt();
+					input.nextLine();
+					academia.expulsarAlumno(id);
+					academia.eliminarAlumno(id);
+					break;
+				}
+				case 8: { // presentarse
+					System.out.print("Id del alumno a presentar: ");
+					int id = input.nextInt();
+					input.nextLine();
+					academia.presentarAlumno(id);
+					break;
+				}
+				case 0: 
+					break;
 				default: System.out.println("Opcion no valida");
 			}
 		} while (opcion != 0);

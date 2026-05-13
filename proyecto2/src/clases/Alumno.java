@@ -1,11 +1,14 @@
 package clases;
 
+import java.time.LocalDate;
+
 public class Alumno extends Persona {
 	private String sede;   // Madrid, Barcelona, Zaragoza
 	private String nivel;  // Basico, Intermedio, Avanzado
 	private Idioma idioma; 
 	private boolean enCurso = true;
 	private boolean graduado = false;
+	
 	
 	// Constructor con todos los atributos, incluidos los heredados de la clase Persona
 	public Alumno (int id, String nombre, String apellido, String sede, String nivel, Idioma idioma) {
@@ -56,10 +59,17 @@ public class Alumno extends Persona {
 		this.graduado = graduado;
 	}
 	
+	// Metodos propio de alumno
 	public void graduarAlumno () {
 		this.enCurso = false;
 		this.graduado = true;
 		System.out.println("Este alumno se ha graduado, ¡FELICIDADES!");
+	}
+	
+	public void expulsarAlumno () {
+		this.enCurso = false;
+		this.graduado = false;
+		System.out.println("Este alumno ha sido expulsado :( ");
 	}
 
 	// toString
@@ -67,6 +77,13 @@ public class Alumno extends Persona {
 	public String toString() {
 		return "Alumno " + super.toString() + "[sede=" + sede + ", nivel=" + nivel + "]" + ", enCurso=" + enCurso
 				+ ", graduado=" + graduado + ", idioma=" + idioma;
+	}
+
+	@Override
+	public void presentarse() {
+		LocalDate fechaHoy = LocalDate.now();
+		System.out.println("Hola soy " + nombre + " y hoy "+ fechaHoy + " tengo clases de " + idioma);
+		
 	}
 
 }

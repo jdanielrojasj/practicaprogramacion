@@ -1,10 +1,12 @@
 package clases;
 
-public class Persona {
+public abstract class Persona {
 	//Atributos protected porque seran heredados por las clases hijas
 		protected int id;
 		protected String nombre;
 		protected String apellido;
+		
+		public abstract void presentarse () ;
 		
 		// Constructor sin atributos
 		public Persona() {

@@ -14,7 +14,7 @@ public class DatosPrueba {
 		academia.altaIdioma("Italiano",false,60);
 		academia.altaIdioma("Chino",true, 500);
 
-		// Recupero referencias a los idiomas para asignarselas a alumnos y profesores
+		// Uso buscarIdioma pasandole el nombre como parametro para crear los Idiomas con los idiomas que ya di de alta
 		Idioma ingles  = academia.buscarIdioma("Ingles");
 		Idioma frances = academia.buscarIdioma("Frances");
 		Idioma aleman  = academia.buscarIdioma("Aleman");
