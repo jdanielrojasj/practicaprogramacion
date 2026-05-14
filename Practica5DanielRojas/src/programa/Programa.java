@@ -15,10 +15,15 @@ import menu.Menu;
  */
 public class Programa {
 
-	/** 
-	 * Dentro del main se crea un GestorAcademia vacio, 
-	 * Luego se le cargan los datos iniciales para no tener que dar de alta todo a mano cada vez que se ejecuta 
+	/** Constructor por defecto. No se usa porque Programa solo expone el main. */
+	public Programa() {}
+
+	/**
+	 * Dentro del main se crea un GestorAcademia vacio,
+	 * Luego se le cargan los datos iniciales para no tener que dar de alta todo a mano cada vez que se ejecuta
 	 * Luego lanza el menu principal que es el que interactua con el usuario
+	 *
+	 * @param args argumentos por linea de comandos (no se usan)
 	 */
 	public static void main(String[] args) {
 
