@@ -1,12 +1,11 @@
 package clases;
 
 /**
- * Clase abstracta Persona.
+ * Clase abstracta Persona
  *
  * La hago abstracta porque no quiero que se puedan crear objetos Persona
- * directamente, sino solo a traves de las clases hijas (Alumno y Profesor).
- * Aqui guardo los atributos que comparten todas las personas de la academia:
- * id, nombre y apellido
+ * directamente, sino solo a traves de las clases hijas (Alumno y Profesor)
+ * Aqui guardo los atributos que comparten todas las personas de la academia: id, nombre y apellido
  *
  * @author Daniel
  * @version 1.0

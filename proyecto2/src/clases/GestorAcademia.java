@@ -4,26 +4,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Clase GestorAcademia.
+ * Clase GestorAcademia
  *
  * Es la clase principal donde gestiono toda la academia. Aqui guardo las
  * tres listas (idiomas, alumnos y profesores) y tengo todos los metodos
- * para dar de alta, listar, buscar, modificar y eliminar.
+ * para dar de alta, listar, buscar, modificar y eliminar
  *
- * He preferido tener una sola clase gestora en vez de una por cada tipo
- * porque asi tengo todo centralizado y desde el Menu solo trabajo con
- * un objeto academia.
- *
- * @author Dani
+ * @author Daniel
  * @version 1.0
  */
 public class GestorAcademia {
 
 	/**
-	 * Idioma especial "Sin asignar" que uso para reasignar a los alumnos y
-	 * profesores cuando se elimina un idioma de la academia. Es static final
-	 * para que exista uno solo y todos los huerfanos apunten al mismo objeto.
-	 * Lo creo con estaActivo=false y horas=0 porque no es un idioma real.
+	 * Se usa para reasignar a los alumnos y profesores cuando se elimina un idioma de la academia
+	 * Es static final para que exista uno solo y todos los afectador sean dirigidos al mismo objetivo
+	 * Lo creo con estaActivo=false y horas=0 porque no es un idioma real
 	 */
 	public static final Idioma IDIOMA_SIN_ASIGNAR = new Idioma("Sin asignar", false, 0);
 
@@ -31,9 +26,6 @@ public class GestorAcademia {
 	ArrayList<Alumno> listaAlumnos;
 	ArrayList<Profesor> listaProfesores;
 	ArrayList<Idioma> listaIdiomas;
-	// Lista de sedes como Strings. Las gestiono dinamicamente para poder
-	// dar de alta y eliminar sedes en tiempo de ejecucion en vez de
-	// tenerlas hardcodeadas en el menu.
 	ArrayList<String> listaSedes;
 
 	/**
@@ -49,10 +41,10 @@ public class GestorAcademia {
 		listaIdiomas = new ArrayList<Idioma>();
 		listaSedes = new ArrayList<String>();
 	}
-	// __________________________________________
+	// __________________________________________ __________________________________________
 	//
-	// 					IDIOMAS 
-	// __________________________________________
+	// 										 IDIOMAS 
+	// __________________________________________ __________________________________________
 	
 	/**
 	 * Da de alta un idioma nuevo en la academia.
@@ -65,8 +57,14 @@ public class GestorAcademia {
 	 */
 	// altaIdioma: recibe los parametros y crea una nueva variable con ellos, luego lo añade al ArrayList listaIdiomas
 	public void altaIdioma(String nombre, boolean estaActivo, int horas) {
+		// Compruebo que no exista ya un idioma con ese nombre para no
+		// tener duplicados en la lista.
+		if (buscarIdioma(nombre) != null) {
+			System.out.println("Ya existe un idioma con nombre '" + nombre + "'. Alta cancelada.");
+		} else {
 			Idioma nuevoIdioma = new Idioma (nombre,estaActivo,horas);
 			listaIdiomas.add(nuevoIdioma);
+		}
 	}
 
 	
@@ -146,15 +144,14 @@ public class GestorAcademia {
 					System.out.println("No existe ningun idioma con nombre '" + nombre);
 					return;
 				}
-				// Igual que con eliminarSede, recorro alumnos y profesores
-				// que tenian el idioma eliminado y les pongo IDIOMA_SIN_ASIGNAR
-				// para que no queden apuntando a un idioma que ya no existe
-				// en la academia.
+				
 				int alumnosAfectados = 0;
 				for (Alumno alumno : listaAlumnos) {
 					if (alumno.getIdioma() != null
 							&& alumno.getIdioma().getNombre().equalsIgnoreCase(nombre)) {
 						alumno.setIdioma(IDIOMA_SIN_ASIGNAR);
+						// Si el alumno se queda sin idioma, ya no esta en curso
+						alumno.setEnCurso(false);
 						alumnosAfectados++;
 					}
 				}
@@ -186,7 +183,7 @@ public class GestorAcademia {
 			public void activarIdioma (String nombre) {
 				Idioma idioma = buscarIdioma(nombre);
 				if (idioma == null) {
-					System.out.println("No existe ningun idioma con nombre '" + nombre);
+					System.out.println("No existe ningun idioma con nombre " + nombre);
 				} else {
 					idioma.activarIdioma();
 					System.out.println("Idioma " + nombre + " activado");
@@ -204,7 +201,7 @@ public class GestorAcademia {
 			public void desactivarIdioma (String nombre) {
 				Idioma idioma = buscarIdioma(nombre);
 				if (idioma == null) {
-					System.out.println("No existe ningun idioma con nombre '" + nombre);
+					System.out.println("No existe ningun idioma con nombre " + nombre);
 				} else {
 					idioma.desactivarIdioma();
 					System.out.println("Idioma " + nombre + " desactivado");
@@ -266,17 +263,19 @@ public class GestorAcademia {
 			    }
 			}
 			
-	// __________________________________________
+	// __________________________________________ __________________________________________
 	//
-	// 					ALUMNOS 
-	// __________________________________________
+	// 										ALUMNOS 
+	// __________________________________________ __________________________________________
 	
 	/**
-	 * Da de alta un alumno nuevo en la academia.
+	 * Da de alta un alumno nuevo en la academia
+	 * Primero verifica que el id no este en uso, para no repetirlo
 	 * Crea un objeto Alumno con los parametros recibidos y lo anade a
-	 * listaAlumnos. El idioma viene ya como objeto (no como String) porque
-	 * desde el Menu lo busco antes con buscarIdioma() para asegurarme de
-	 * que existe.
+	 * listaAlumnos. 
+	 * 
+	 * El idioma es un objeto y se verifica con buscarIdioma() para asegurarme de
+	 * que existe
 	 *
 	 * @param id identificador unico del alumno
 	 * @param nombre nombre del alumno
@@ -287,10 +286,15 @@ public class GestorAcademia {
 	 */
 	// altaAlumno: recibe los parametros y crea una nueva variable con ellos, luego lo añade al ArrayList listaAlumnos
 	public void altaAlumno (int id, String nombre, String apellido, String sede, String nivel, Idioma idioma)  {
-
+		// Compruebo que no exista ya un alumno con ese id para que el id
+		// sea unico dentro de la academia.
+		if (buscarAlumno(id) != null) {
+			System.err.println("Alta cancelada");
+			System.out.println("Ya existe un alumno con id " + id);
+		} else {
 			Alumno nuevoAlumno = new Alumno(id,nombre,apellido,sede,nivel,idioma);
 			listaAlumnos.add(nuevoAlumno);
-
+		}
 	}
 	
 	
@@ -309,9 +313,8 @@ public class GestorAcademia {
 		}
 		
 	/**
-	 * Busca un alumno por su id.
-	 * Como el id es un int uso == para comparar, no .equals() (eso es para
-	 * objetos). Si lo encuentra devuelve el Alumno, si no, devuelve null.
+	 * Busca un alumno por su id
+	 * Si lo encuentra devuelve el Alumno, si no, devuelve null
 	 *
 	 * @param id id del alumno a buscar
 	 * @return el Alumno encontrado o null si no existe
@@ -327,11 +330,10 @@ public class GestorAcademia {
 		}
 		
 	/**
-	 * Elimina un alumno del ArrayList buscandolo por id.
-	 * Igual que en eliminarIdioma uso Iterator para no tener problemas con
-	 * la modificacion concurrente al borrar mientras recorro. Uso una
-	 * variable booleana "encontrado" para saber si lo borre o no y mostrar
-	 * un mensaje distinto al final.
+	 * Elimina un alumno del ArrayList buscandolo por id
+	 * Igual que en eliminarIdioma uso Iterator
+	 * Uso una variable booleana "encontrado" para saber si lo borre o no y mostrar
+	 * un mensaje distinto al final
 	 *
 	 * @param id id del alumno a eliminar
 	 */
@@ -356,9 +358,8 @@ public class GestorAcademia {
 
 	/**
 	 * Modifica la sede de un alumno buscandolo por id.
-	 * Primero lo busco con buscarAlumno() para no repetir el codigo del
-	 * bucle. Si existe le cambio la sede con su setter, si no, aviso por
-	 * consola.
+	 * Primero lo busco con buscarAlumno() 
+	 * Si existe le cambio la sede con su setter, si no, aviso por consola.
 	 *
 	 * @param id id del alumno
 	 * @param nuevaSede nueva sede a asignar
@@ -367,17 +368,25 @@ public class GestorAcademia {
 		public void modificarSedeAlumno (int id, String nuevaSede) {
 			Alumno alumno = buscarAlumno(id);
 			if (alumno == null) {
-				System.out.println("No existe ningun alumno con id " + id + ".");
-			} else {
-				alumno.setSede(nuevaSede);
-				System.out.println("Sede del alumno " + id + " modificada a " + nuevaSede);
+				System.out.println("No existe ningun alumno con id " + id);
+				return;
 			}
+			// Compruebo que la sede exista en listaSedes antes de asignarla
+			// Asi evito crear alumnos en sedes que no existen
+			if (buscarSede(nuevaSede) == null) {
+				System.err.println("Cambio cancelado");
+				System.out.println("La sede " + nuevaSede + " no existe");
+				return;
+			}
+			alumno.setSede(nuevaSede);
+			System.out.println("Sede del alumno " + id + " modificada a " + nuevaSede);
 		}
 
 	/**
-	 * Gradua al alumno con el id indicado.
-	 * Lo busca y delega en el metodo graduarAlumno() de la clase Alumno,
-	 * que es quien sabe que atributos tiene que cambiar (enCurso, graduado).
+	 * Gradua al alumno con el id indicado
+	 * Lo busca y llama al el metodo graduarAlumno() de la clase Alumno,
+	 * si no existe, muestra un mensaje indicandolo por consola
+	 * Si existe, lo gradua usando el metodo graduarAlumno()
 	 *
 	 * @param id id del alumno a graduar
 	 */
@@ -416,6 +425,7 @@ public class GestorAcademia {
 		 * el Menu sin tener que sacar primero el alumno con buscarAlumno().
 		 *
 		 * @param id id del alumno que se presenta
+
 		 */
 		// Metodo de Alumno Presentarse
 				public void presentarAlumno (int id) {
@@ -427,10 +437,10 @@ public class GestorAcademia {
 					}
 				}
 
-	// __________________________________________
+	// __________________________________________ __________________________________________
 	//
-	// 					PROFESORES
-	// __________________________________________
+	// 										PROFESORES
+	// __________________________________________ __________________________________________
 
 	/**
 	 * Da de alta un profesor nuevo en la academia.
@@ -446,8 +456,13 @@ public class GestorAcademia {
 	 */
 	// altaProfesor: recibe los parametros y crea una nueva variable con ellos, luego lo añade al ArrayList listaProfesores
 		public void altaProfesor (int id, String nombre, String apellido, boolean antiguedad, Idioma idioma) {
-			Profesor nuevoProfesor = new Profesor(id, nombre, apellido, antiguedad, idioma);
-			listaProfesores.add(nuevoProfesor);
+			// Compruebo que no exista ya un profesor con ese id
+			if (buscarProfesor(id) != null) {
+				System.out.println("Ya existe un profesor con id " + id + ". Alta cancelada.");
+			} else {
+				Profesor nuevoProfesor = new Profesor(id, nombre, apellido, antiguedad, idioma);
+				listaProfesores.add(nuevoProfesor);
+			}
 		}
 
 	/**
@@ -525,10 +540,10 @@ public class GestorAcademia {
 			}
 		}
 
-	// __________________________________________
+	// __________________________________________ __________________________________________
 	//
-	// 					SEDES
-	// __________________________________________
+	// 										  SEDES
+	// __________________________________________ __________________________________________
 
 	/**
 	 * Da de alta una sede nueva en la academia.
@@ -547,11 +562,10 @@ public class GestorAcademia {
 		}
 
 	/**
-	 * Busca una sede por su nombre.
-	 * Devuelve el String si lo encuentra (util para confirmar que existe)
-	 * o null si no esta en la lista. Comparo con equalsIgnoreCase para
-	 * que "madrid" y "Madrid" se consideren la misma sede.
-	 *
+	 * Busca una sede por su nombre
+	 * Devuelve el String si lo encuentra o null si no esta en la lista. 
+	 * Comparo con equalsIgnoreCase para no distinguir de mayusculas y minusculas
+	 * 
 	 * @param nombre nombre de la sede a buscar
 	 * @return el nombre de la sede encontrado o null si no existe
 	 */
@@ -565,15 +579,12 @@ public class GestorAcademia {
 		}
 
 	/**
-	 * Elimina una sede del ArrayList por su nombre.
-	 * Uso Iterator para borrar de forma segura mientras se recorre.
+	 * Elimina una sede del ArrayList por su nombre
+	 * Uso Iterator para borrar de forma segura mientras se recorre
 	 *
-	 * Como en Alumno el atributo sede es un String (una copia, no una
-	 * referencia), al borrar la sede de la lista los alumnos seguirian
-	 * teniendo el nombre antiguo en su atributo. Para evitar esto, despues
-	 * de quitar la sede recorro listaAlumnos y a los que tenian esa sede
+	 * Despues de quitar la sede recorro listaAlumnos y a los que tenian esa sede
 	 * les pongo "Sin asignar". Asi al listarlos se ve claramente que se
-	 * quedaron sin sede.
+	 * quedaron sin sede
 	 *
 	 * @param nombre nombre de la sede a eliminar
 	 */
@@ -591,27 +602,22 @@ public class GestorAcademia {
 			}
 			if (!encontrado) {
 				System.out.println("No existe ninguna sede con nombre " + nombre);
-				return;
-			}
-			// Actualizo los alumnos que tenian esa sede para que no queden
-			// con un nombre de sede que ya no existe.
-			int afectados = 0;
-			for (Alumno alumno : listaAlumnos) {
-				if (alumno.getSede().equalsIgnoreCase(nombre)) {
-					alumno.setSede("Sin asignar");
-					afectados++;
+			} else {
+				// Actualizo los alumnos que tenian esa sede para que no
+				// queden con un nombre de sede que ya no existe
+				for (Alumno alumno : listaAlumnos) {
+					if (alumno.getSede().equalsIgnoreCase(nombre)) {
+						alumno.setSede("Sin asignar");
+						// Si el alumno se queda sin sede, ya no esta en curso
+						alumno.setEnCurso(false);
+					}
 				}
-			}
-			if (afectados > 0) {
-				System.out.println(afectados + " alumno(s) quedaron como 'Sin asignar'");
 			}
 		}
 
 	/**
-	 * Muestra por consola las sedes disponibles.
-	 * Si la lista esta vacia avisa con un mensaje, si no, las imprime
-	 * una por linea. Lo uso desde el submenu de sedes para listarlas
-	 * y al dar de alta un alumno para mostrar las opciones.
+	 * Muestra por consola las sedes disponibles en una sola linea
+	 * Si la lista esta vacia avisa con un mensaje
 	 */
 		public void mostrarSedesDisponibles () {
 			if (listaSedes.isEmpty()) {

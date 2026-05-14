@@ -110,7 +110,7 @@ public class Alumno extends Persona {
 	@Override
 	public String toString() {
 		// Uso idioma.getNombre() en vez de idioma para que solo salga el nombre
-		// y no el toString completo de Idioma con todos sus atributos.
+		// y no el toString completo de Idioma con todos sus atributos
 		return "Alumno " + super.toString() + "[sede=" + sede + ", nivel=" + nivel + "]" + ", enCurso=" + enCurso
 				+ ", graduado=" + graduado + ", idioma=" + idioma.getNombre();
 	}
@@ -123,8 +123,6 @@ public class Alumno extends Persona {
 	@Override
 	public void presentarse() {
 		LocalDate fechaHoy = LocalDate.now();
-		// Uso idioma.getNombre() en vez de idioma para que solo salga el nombre
-		// y no el toString completo del objeto Idioma con todos sus atributos.
 		System.out.println("Hola soy " + nombre + " y hoy "+ fechaHoy + " tengo clases de " + idioma.getNombre());
 
 	}

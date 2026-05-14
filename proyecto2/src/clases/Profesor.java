@@ -1,21 +1,22 @@
 package clases;
 
 /**
- * Clase Profesor.
+ * Clase Profesor
  *
- * Hereda de Persona igual que Alumno porque un Profesor TAMBIEN es una
- * persona, asi reutilizo id, nombre y apellido.
+ * Hereda de Persona igual que Alumno porque un Profesor tambien es una
+ * persona, asi reutilizo id, nombre y apellido
  *
  * Cada profesor tiene un salario base (por defecto 1000), un booleano
  * antiguedad que indica si lleva mucho tiempo en la academia, y el
- * idioma que imparte. Si tiene antiguedad cobra un bono extra.
+ * idioma que imparte. 
+ * 
+ * Si tiene antiguedad cobra un bono extra
  *
- * @author Dani
+ * @author Daniel
  * @version 1.0
  */
 public class Profesor extends Persona {
 
-	// Constante
 	/** Cantidad fija que se suma al salario base cuando el profesor tiene antiguedad. */
 	private static final double BONO_ANTIGUEDAD = 500.0;
 
@@ -70,7 +71,7 @@ public class Profesor extends Persona {
 		/**
 		 * Metodo propio de Profesor que calcula el salario final del profesor
 		 * si el profesor tiene antiguedad le sumo el BONO_ANTIGUEDAD al
-		 * salario base. Si no, devuelvo solo el salario base
+		 * salario base, si no, devuelvo solo el salario base
 		 *
 		 * @return salario total que cobra el profesor (con o sin bono)
 		 */
@@ -92,9 +93,9 @@ public class Profesor extends Persona {
 					;
 		}
 		/**
-		 * Metodo abstracto presentarse heredado de Persona.
+		 * Metodo abstracto presentarse heredado de Persona
 		 * De momento esta vacio porque para el profesor no se ha definido un
-		 * mensaje de presentacion.
+		 * mensaje de presentacion
 		 */
 		@Override
 		public void presentarse() {

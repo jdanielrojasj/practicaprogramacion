@@ -126,7 +126,9 @@ public class Menu {
 	// 				SUBMENU IDIOMAS
 	// __________________________________________
 	public static void menuIdiomas(GestorAcademia academia) {
-		int opcion;
+		// Inicializo opcion a -1 por si el try/catch no le asigna valor
+		// (cuando el usuario teclea texto en lugar de numero).
+		int opcion = -1;
 		do {
 			System.out.println("--- IDIOMAS ---");
 			System.out.println("1. Alta");
@@ -138,20 +140,38 @@ public class Menu {
 			System.out.println("7. Idioma con mas horas");
 			System.out.println("0. Volver");
 			System.out.println("____________________________________");
-			opcion = input.nextInt();
-			input.nextLine(); 
+			// Mismo try/catch que en menuPrincipal: si el usuario teclea
+			// texto, capturo la excepcion, limpio el buffer y pongo
+			// opcion = -1 para que el switch caiga en default.
+			try {
+				opcion = input.nextInt();
+				input.nextLine();
+			} catch (InputMismatchException e) {
+				System.out.println("Tienes que escribir un numero");
+				input.nextLine();
+				opcion = -1;
+			}
 
 			switch (opcion) {
-				case 1: { // alta idioma
-					System.out.print("Nombre del idioma: ");
-					String nombre = input.nextLine();
-					System.out.print("Esta activo (true/false): ");
-					boolean activo = input.nextBoolean();
-					System.out.print("Horas del curso: ");
-					int horas = input.nextInt();
-					input.nextLine(); 
-					// Recibo por teclado el nombre, si esta activo o no y la cantidad de horas, luego se crea con altaIdioma y esos parametros
-					academia.altaIdioma(nombre, activo, horas);
+				case 1: { 
+					// alta idioma
+					// Envuelvo toda el alta en try/catch porque pide un
+					// boolean y un int por teclado. Si el usuario se
+					// equivoca en cualquiera de los dos, se cancela el alta
+					try {
+						System.out.print("Nombre del idioma: ");
+						String nombre = input.nextLine();
+						System.out.print("Esta activo (true/false): ");
+						boolean activo = input.nextBoolean();
+						System.out.print("Horas del curso: ");
+						int horas = input.nextInt();
+						input.nextLine();
+						// Recibo por teclado el nombre, si esta activo o no y la cantidad de horas, luego se crea con altaIdioma y esos parametros
+						academia.altaIdioma(nombre, activo, horas);
+					} catch (InputMismatchException e) {
+						System.err.println("Dato(s) no valido(s), alta cancelada, intenalo de nuevo");
+						input.nextLine();
+					}
 					break;
 				}
 				case 2: // listar idiomas
@@ -226,7 +246,7 @@ public class Menu {
 	// 				SUBMENU ALUMNOS
 	// __________________________________________
 	public static void menuAlumnos(GestorAcademia academia) {
-		int opcion;
+		int opcion = -1;
 		do {
 			System.out.println("--- ALUMNOS ---");
 			System.out.println("1. Alta");
@@ -239,8 +259,14 @@ public class Menu {
 			System.out.println("8. Presentar alumno por ID");
 			System.out.println("0. Volver");
 			System.out.println("____________________________________");
-			opcion = input.nextInt();
-			input.nextLine();
+			try {
+				opcion = input.nextInt();
+				input.nextLine();
+			} catch (InputMismatchException e) {
+				System.err.println("Tienes que escribir un numero");
+				input.nextLine();
+				opcion = -1;
+			}
 
 			switch (opcion) {
 				case 1: { // alta alumno
@@ -306,6 +332,9 @@ public class Menu {
 					System.out.print("Id del alumno: ");
 					int id = input.nextInt();
 					input.nextLine();
+					System.out.println("Sedes disponibles:");
+					academia.mostrarSedesDisponibles();
+					System.out.println();
 					System.out.print("Nueva sede: ");
 					String nuevaSede = input.nextLine();
 					academia.modificarSedeAlumno(id, nuevaSede);
@@ -353,7 +382,7 @@ public class Menu {
 	// 				SUBMENU PROFESORES
 	// __________________________________________
 	public static void menuProfesores(GestorAcademia academia) {
-		int opcion;
+		int opcion = -1;
 		do {
 			System.out.println("--- PROFESORES ---");
 			System.out.println("1. Alta");
@@ -363,8 +392,14 @@ public class Menu {
 			System.out.println("5. Modificar sueldo");
 			System.out.println("0. Volver");
 			System.out.println("____________________________________");
-			opcion = input.nextInt();
-			input.nextLine(); // 
+			try {
+				opcion = input.nextInt();
+				input.nextLine();
+			} catch (InputMismatchException e) {
+				System.err.println("Tienes que escribir un numero");
+				input.nextLine();
+				opcion = -1;
+			}
 
 			switch (opcion) {
 				case 1: { // alta profesor
@@ -384,7 +419,8 @@ public class Menu {
 					String nombreIdioma = input.nextLine();
 					Idioma idioma = academia.buscarIdioma(nombreIdioma);
 					if (idioma == null) {
-						System.out.println("No existe el idioma '" + nombreIdioma + "'. Alta cancelada");
+						System.out.println("No existe el idioma '" + nombreIdioma);
+						System.err.println("Alta cancelada");
 					} else {
 						academia.altaProfesor(id, nombre, apellido, antiguedad, idioma);
 						System.out.println("Profesor dado de alta");
@@ -432,10 +468,10 @@ public class Menu {
 	}
 
 	/**
-	 * Submenu de sedes.
+	 * Submenu de sedes
 	 * Permite dar de alta, listar y eliminar sedes en tiempo de ejecucion.
 	 * Las sedes son simples Strings dentro de un ArrayList<String> en
-	 * GestorAcademia, asi me evito crear una clase Sede solo para esto.
+	 * GestorAcademia
 	 *
 	 * @param academia objeto GestorAcademia donde se operan los cambios
 	 */
@@ -444,7 +480,7 @@ public class Menu {
 	// 				SUBMENU SEDES
 	// __________________________________________
 	public static void menuSedes(GestorAcademia academia) {
-		int opcion;
+		int opcion = -1;
 		do {
 			System.out.println("--- SEDES ---");
 			System.out.println("1. Alta");
@@ -452,9 +488,15 @@ public class Menu {
 			System.out.println("3. Eliminar");
 			System.out.println("0. Volver");
 			System.out.println("____________________________________");
-			opcion = input.nextInt();
-			input.nextLine();
-
+			try {
+				opcion = input.nextInt();
+				input.nextLine();
+			} catch (InputMismatchException e) {
+				System.err.println("Tienes que escribir un numero (1,2,3 ó 0 para volver)");
+				input.nextLine();
+				opcion = -1;
+			}
+			
 			switch (opcion) {
 				case 1: { // alta sede
 					System.out.print("Nombre de la nueva sede: ");
@@ -464,6 +506,7 @@ public class Menu {
 				}
 				case 2: // listar sedes
 					academia.mostrarSedesDisponibles();
+					System.out.println();
 					break;
 				case 3: { // eliminar sede
 					System.out.print("Nombre de la sede a eliminar: ");
@@ -471,8 +514,9 @@ public class Menu {
 					academia.eliminarSede(nombre);
 					break;
 				}
-				case 0: break;
-				default: System.out.println("Opcion no valida.");
+				case 0: 
+					break;
+				default: System.out.println("Opcion no valida");
 			}
 		} while (opcion != 0);
 	}

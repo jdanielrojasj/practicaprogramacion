@@ -1,14 +1,15 @@
 package clases;
 
 /**
- * Clase Idioma.
+ * Clase Idioma
  *
- * Representa un idioma que se imparte en la academia. La uso tanto para
- * los alumnos (el idioma que estudian) como para los profesores (el idioma
- * que ensenan). No hereda de nadie, es una clase independiente.
+ * Representa un idioma que se imparte en la academia. 
+ * 
+ * La uso tanto para los alumnos (el idioma que estudian) como para los profesores (el idioma
+ * que ensenan)
  *
  * Cada idioma tiene un nombre, un estado (activo o no, por si se deja de
- * ofrecer) y unas horas totales del curso.
+ * ofrecer) y unas horas totales del curso
  *
  * @author Daniel
  * @version 1.0
@@ -20,7 +21,7 @@ public class Idioma {
 	private int horas;
 
 	/**
-	 * Constructor solo con el nombre.
+	 * Constructor solo con el nombre
 	 * Lo deje por si alguna vez necesito crear un idioma rapido sin los
 	 * demas datos, aunque normalmente uso el constructor completo.
 	 *
@@ -32,9 +33,9 @@ public class Idioma {
 	}
 
 	/**
-	 * Constructor con todos los atributos.
+	 * Constructor con todos los atributos
 	 * Es el que se usa normalmente desde el GestorAcademia cuando damos
-	 * de alta un idioma nuevo.
+	 * de alta un idioma nuevo
 	 *
 	 * @param nombre nombre del idioma
 	 * @param estaActivo true si el idioma se imparte actualmente
