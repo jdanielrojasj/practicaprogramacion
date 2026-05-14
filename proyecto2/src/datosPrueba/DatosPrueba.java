@@ -7,6 +7,11 @@ public class DatosPrueba {
 
 	// Carga idiomas, alumnos y profesores de prueba para arrancar el programa con datos
 	public static void cargar(GestorAcademia academia) {
+		// Sedes
+		academia.altaSede("Madrid");
+		academia.altaSede("Barcelona");
+		academia.altaSede("Zaragoza");
+
 		// Idiomas
 		academia.altaIdioma("Ingles",true,100);
 		academia.altaIdioma("Frances",true,80);

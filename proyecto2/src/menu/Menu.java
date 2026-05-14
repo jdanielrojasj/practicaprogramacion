@@ -1,5 +1,6 @@
 package menu;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import clases.Alumno;
@@ -7,25 +8,79 @@ import clases.Profesor;
 import clases.Idioma;
 import clases.GestorAcademia;
 
+/**
+ * Clase Menu
+ *
+ * Aqui esta toda la interaccion por consola con el usuario. La he puesto
+ * en una clase aparte para que el main quede limpio y para separar la logica de GestorAcademia
+ * de la interfaz por consola
+ *
+ * Tiene un menu principal con tres submenus (idiomas, alumnos y
+ * profesores). Cada submenu lleva sus opciones de alta, listar, buscar,
+ * eliminar y modificar
+ *
+ * Todos los metodos son static porque no necesito crear un objeto Menu,
+ * los llamo directamente desde Programa
+ *
+ * @author Daniel
+ * @version 1.0
+ */
 public class Menu {
 
+	/** Scanner estatico para leer datos por teclado en todos los menus */
 	static Scanner input = new Scanner(System.in);
 
+	/**
+	 * Menu principal del programa
+	 * Muestra las tres opciones (idiomas, alumnos, profesores) y derivan a
+	 * su submenu correspondiente. Uso un do-while para que el menu se
+	 * repita hasta que el usuario meta 0 para salir.
+	 * El input.nextLine() despues de cada nextInt() lo pongo para limpiar el buffer
+	 *
+	 * @param academia objeto GestorAcademia con todos los datos cargados
+	 */
 	// __________________________________________
 	//
 	// 				MENU PRINCIPAL
 	// __________________________________________
 	public static void menuPrincipal(GestorAcademia academia) {
-		int opcion;
+		// Inicializo opcion a -1 para que si el try/catch no le asigna valor
+		// (porque el usuario tecleo mal), no quede sin inicializar.
+		int opcion = -1;
 		do {
-			System.out.println("* ===== ACADEMIA DE IDIOMAS ===== *");
+			System.out.println("==============================================");
+			System.out.println(" *========|| ACADEMIA DE IDIOMAS ||========*");
+			System.out.println("==============================================");
+			System.out.println("Bienvenido a la academia de idiomas Idio+");
+			System.out.print("Nuestros idiomas disponibles son: ");
+			academia.mostrarNombresIdiomasDisponibles();
+			System.out.println();
+			System.out.print("Tenemos sedes en: ");
+			academia.mostrarSedesDisponibles();
+			System.out.println();
+			System.out.println("_________________________________________________");
+			System.out.println("Gestion de Idiomas, Usuarios y Profesores");
 			System.out.println("1. Idiomas");
 			System.out.println("2. Alumnos");
 			System.out.println("3. Profesores");
+			System.out.println("4. Sedes");
 			System.out.println("0. Salir");
-			System.out.println("____________________________________");
-			opcion = input.nextInt();
-			input.nextLine(); 
+			System.out.println("_________________________________________________");
+			// Envuelvo la lectura en try/catch para que si el usuario teclea
+			// texto en vez de un numero, el programa no se caiga con
+			// InputMismatchException. En el catch limpio el buffer con
+			// input.nextLine() porque si no, el caracter mal tecleado se queda
+			// dentro del Scanner y entrariamos en un bucle infinito de
+			// excepciones. Pongo opcion = -1 para que el switch caiga en el
+			// default y el do-while vuelva a pedir el dato.
+			try {
+				opcion = input.nextInt();
+				input.nextLine();
+			} catch (InputMismatchException e) {
+				System.err.println("Tienes que escribir un numero (1,2,3,4 ó 0 para salir)");
+				input.nextLine();
+				opcion = -1;
+			}
 
 			switch (opcion) {
 				case 1: menuIdiomas(academia);
@@ -34,13 +89,38 @@ public class Menu {
 					break;
 				case 3: menuProfesores(academia);
 					break;
-				case 0: System.out.println(" *** FIN DEL PROGRAMA *** ");
+				case 4: menuSedes(academia);
 					break;
-				default: System.out.println("Opcion no valida");
+				case 0: System.out.println(" *** FIN DEL PROGRAMA *** ");
+				System.out.println("░░░░░░░░░░░░░░░░░░░░░░█████████░░░░░░░░░");
+				System.out.println("░░███████░░░░░░░░░░███▒▒▒▒▒▒▒▒███░░░░░░░");
+				System.out.println("░░█▒▒▒▒▒▒█░░░░░░░███▒▒▒▒▒▒▒▒▒▒▒▒▒███░░░░");
+				System.out.println("░░░█▒▒▒▒▒▒█░░░░██▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░░");
+				System.out.println("░░░░█▒▒▒▒▒█░░░██▒▒▒▒▒██▒▒▒▒▒▒██▒▒▒▒▒███░");
+				System.out.println("░░░░░█▒▒▒█░░░█▒▒▒▒▒▒████▒▒▒▒████▒▒▒▒▒▒██");
+				System.out.println("░░░█████████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██");
+				System.out.println("░░░█▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒██");
+				System.out.println("░██▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒██▒▒▒▒▒▒▒▒▒▒██▒▒▒▒██");
+				System.out.println("██▒▒▒███████████▒▒▒▒▒██▒▒▒▒▒▒▒▒██▒▒▒▒▒██");
+				System.out.println("█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒████████▒▒▒▒▒▒▒██");
+				System.out.println("██▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░");
+				System.out.println("░█▒▒▒███████████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒██░░░");
+				System.out.println("░██▒▒▒▒▒▒▒▒▒▒████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█░░░░░");
+				System.out.println("░░████████████░░░█████████████████░░░░░░");
+					break;
+				default: System.out.println("Vuelve a intentarlo");
 			}
 		} while (opcion != 0);
 	}
 
+	/**
+	 * Submenu de idiomas.
+	 * Permite dar de alta, listar, buscar, eliminar, activar, desactivar
+	 * y ver el idioma con mas horas. Cada opcion llama al metodo
+	 * correspondiente del GestorAcademia.
+	 *
+	 * @param academia objeto GestorAcademia donde se operan los cambios
+	 */
 	// __________________________________________
 	//
 	// 				SUBMENU IDIOMAS
@@ -84,7 +164,7 @@ public class Menu {
 					// Recibo por teclado el nombre del idioma y lo busco con el metodo buscarIdioma(nombre)
 					if (idioma == null) {
 						// Si es null muestra por pantalla que no existe el idioma ingresado por teclado
-						System.out.println("No existe el idioma '" + nombre );
+						System.out.println("No existe el idioma " + nombre );
 					} else {
 						// Si existe lo devuelve
 						System.out.println(idioma);
@@ -115,7 +195,14 @@ public class Menu {
 					// desactivarIdioma recibe el nombre como parametro y lo desactiva
 					break;
 				} case 7 :{ // Idioma con mas horas
-					System.out.println(academia.idiomaConMasHoras());
+					// Si la lista de idiomas esta vacia el metodo devuelve null,
+					// asi que aviso al usuario en vez de imprimir "null"
+					Idioma masHoras = academia.idiomaConMasHoras();
+					if (masHoras == null) {
+						System.out.println("No hay idiomas dados de alta.");
+					} else {
+						System.out.println(masHoras);
+					}
 					break;
 				}
 				case 0: break;
@@ -124,6 +211,16 @@ public class Menu {
 		} while (opcion != 0);
 	}
 
+	/**
+	 * Submenu de alumnos
+	 * Permite dar de alta, listar, buscar, eliminar, modificar la sede,
+	 * graduar, expulsar y presentar al alumno por id.
+	 * En el alta primero llamo a listarIdiomasDisponibles() para que el
+	 * usuario sepa que idiomas puede asignar, y a buscarIdioma() para
+	 * verificar que el idioma escrito existe antes de crear el alumno.
+	 *
+	 * @param academia objeto GestorAcademia donde se operan los cambios
+	 */
 	// __________________________________________
 	//
 	// 				SUBMENU ALUMNOS
@@ -154,8 +251,17 @@ public class Menu {
 					String nombre = input.nextLine();
 					System.out.print("Apellido: ");
 					String apellido = input.nextLine();
-					System.out.print("Sede (Zaragoza/Madrid/Barcelona: ");
+					System.out.println("Sedes disponibles:");
+					academia.mostrarSedesDisponibles();
+					System.out.print("Sede: ");
 					String sede = input.nextLine();
+					// Verifico que la sede tecleada exista en la lista.
+					// Si no existe, cancelo el alta para no crear alumnos
+					// con sedes que no estan dadas de alta.
+					if (academia.buscarSede(sede) == null) {
+						System.out.println("No existe la sede '" + sede + "'. Alta cancelada.");
+						break;
+					}
 					System.out.print("Nivel (Basico/Intermedio/Avanzado): ");
 					String nivel = input.nextLine();
 					System.out.println("Idiomas disponibles:");
@@ -234,6 +340,14 @@ public class Menu {
 		} while (opcion != 0);
 	}
 
+	/**
+	 * Submenu de profesores.
+	 * Permite dar de alta, listar, buscar, eliminar y modificar el sueldo.
+	 * Funciona igual que menuAlumnos, pero llamando a los metodos de
+	 * profesor del GestorAcademia.
+	 *
+	 * @param academia objeto GestorAcademia donde se operan los cambios
+	 */
 	// __________________________________________
 	//
 	// 				SUBMENU PROFESORES
@@ -309,6 +423,52 @@ public class Menu {
 					input.nextLine();
 					// Recibo el id y el nuevo sueldo por teclado y se lo paso al metodo modificarSueldoProfesor
 					academia.modificarSueldoProfesor(id, nuevoSueldo);
+					break;
+				}
+				case 0: break;
+				default: System.out.println("Opcion no valida.");
+			}
+		} while (opcion != 0);
+	}
+
+	/**
+	 * Submenu de sedes.
+	 * Permite dar de alta, listar y eliminar sedes en tiempo de ejecucion.
+	 * Las sedes son simples Strings dentro de un ArrayList<String> en
+	 * GestorAcademia, asi me evito crear una clase Sede solo para esto.
+	 *
+	 * @param academia objeto GestorAcademia donde se operan los cambios
+	 */
+	// __________________________________________
+	//
+	// 				SUBMENU SEDES
+	// __________________________________________
+	public static void menuSedes(GestorAcademia academia) {
+		int opcion;
+		do {
+			System.out.println("--- SEDES ---");
+			System.out.println("1. Alta");
+			System.out.println("2. Listar");
+			System.out.println("3. Eliminar");
+			System.out.println("0. Volver");
+			System.out.println("____________________________________");
+			opcion = input.nextInt();
+			input.nextLine();
+
+			switch (opcion) {
+				case 1: { // alta sede
+					System.out.print("Nombre de la nueva sede: ");
+					String nombre = input.nextLine();
+					academia.altaSede(nombre);
+					break;
+				}
+				case 2: // listar sedes
+					academia.mostrarSedesDisponibles();
+					break;
+				case 3: { // eliminar sede
+					System.out.print("Nombre de la sede a eliminar: ");
+					String nombre = input.nextLine();
+					academia.eliminarSede(nombre);
 					break;
 				}
 				case 0: break;
